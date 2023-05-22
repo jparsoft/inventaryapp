@@ -67,14 +67,36 @@ class SheetsApi {
   static Future insertRow(ProductModel row) async {
     try {
       final int rowCount = await _getRowCount();
-      final newRow = row.copyWith(id: '${rowCount+1}');
+      final newRow = row.copyWith(id: '${rowCount + 1}');
 
       AppLogger.log(_TAG, 'Inserting row: ${newRow.toJson()}');
 
-      await _productsSheet!.values
-          .map.appendRow(newRow.toJson());
+      await _productsSheet!.values.map.appendRow(newRow.toJson());
     } catch (e) {
       AppLogger.log(_TAG, e.toString());
+    }
+  }
+
+  static Future<List<ProductModel>> getProducts() async {
+    try {
+      final products = await _productsSheet!.values.map.allRows();
+      AppLogger.log(_TAG, 'Products: $products');
+      return products!.map((e) => ProductModel.fromJson(e)).toList();
+    } catch (e) {
+      AppLogger.log(_TAG, e.toString());
+      return [];
+    }
+  }
+
+  // get by name
+  static Future<ProductModel?> getByName({required String name}) async {
+    try {
+      final product = await _productsSheet!.values.map.rowByKey(name, fromColumn: 1);
+      AppLogger.log(_TAG, 'Products: $product');
+      return ProductModel.fromJson(product!);
+    } catch (e) {
+      AppLogger.log(_TAG, 'Producto no encontrado');
+      return null;
     }
   }
 }

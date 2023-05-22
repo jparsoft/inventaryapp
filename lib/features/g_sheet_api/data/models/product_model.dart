@@ -54,4 +54,19 @@ class ProductModel {
       createdAt: createdAt ?? this.createdAt,
     );
   }
+
+  // fromJson
+
+  factory ProductModel.fromJson(Map<String, dynamic> json) {
+    return ProductModel(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      price: json['price'] as String,
+      quantity: json['quantity'] as String,
+      description: json['description'] as String,
+      image: json['image'] as String,
+      category: json['category'] as String,
+      createdAt: json['createdAt'] as String,
+    );
+  }
 }

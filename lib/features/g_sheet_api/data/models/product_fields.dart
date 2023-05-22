@@ -9,8 +9,8 @@ class ProductFields {
   static const String createdAt = 'createdAt';
 
   static const List<String> values = [
-    id,
     name,
+    id,
     price,
     quantity,
     description,
