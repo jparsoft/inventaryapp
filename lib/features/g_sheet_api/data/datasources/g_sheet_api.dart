@@ -1,9 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:gsheets/gsheets.dart';
 import 'package:inventary_app/core/app_logger.dart';
-import 'package:inventary_app/core/fixture_reader.dart';
 import 'package:inventary_app/features/g_sheet_api/data/models/product_fields.dart';
 import 'package:inventary_app/features/g_sheet_api/data/models/product_model.dart';
 
@@ -88,10 +86,26 @@ class SheetsApi {
     }
   }
 
+  static Future<List<ProductModel>> getProductsFiltered(
+      {required String filter}) async {
+    try {
+      final products = await _productsSheet!.values.map.allRows();
+      AppLogger.log(_TAG, 'Products: $products');
+      return products!
+          .map((e) => ProductModel.fromJson(e))
+          .where((element) => element.name.contains(filter)||element.category.contains(filter))
+          .toList();
+    } catch (e) {
+      AppLogger.log(_TAG, e.toString());
+      return [];
+    }
+  }
+
   // get by name
   static Future<ProductModel?> getByName({required String name}) async {
     try {
-      final product = await _productsSheet!.values.map.rowByKey(name, fromColumn: 1);
+      final product =
+          await _productsSheet!.values.map.rowByKey(name, fromColumn: 1);
       AppLogger.log(_TAG, 'Products: $product');
       return ProductModel.fromJson(product!);
     } catch (e) {

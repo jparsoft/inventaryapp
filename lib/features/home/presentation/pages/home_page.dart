@@ -29,80 +29,61 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.grey[300],
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            const Text(
-              'Bienvenido wekereke',
-              style: TextStyle(fontSize: 30),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            const Text('Mis productos'),
-            const SizedBox(
-              height: 20,
-            ),
-            SizedBox(
-              height: 500,
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: products.length,
-                itemBuilder: (context, index) => Card(
-                  color: Colors.grey[200],
-                  child: ExpansionTile(
-                    title: Text(products[index].name),
-                    subtitle: Text('\$${products[index].price}'),
-                    childrenPadding: const EdgeInsets.all(16),
-                    expandedAlignment: Alignment.centerLeft,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Divider(),
-                          const Text('Cantidad'),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          Text(products[index].quantity),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          const Text('Categoría'),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          Text(products[index].category),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          const Text('Fecha de creación'),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          Text(products[index].createdAt),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          const Text('Descripción'),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          Text(products[index].description),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                        ],
+      color: Colors.transparent,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              const Text(
+                'Listado de productos',
+                style: TextStyle(fontSize: 30),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.7,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: products.length,
+                  itemBuilder: (context, index) => Card(
+                    child: ListTile(
+                      title: Text(
+                        products[index].name,
+                        style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black87),
                       ),
-                    ],
+                      subtitle: Text(
+                        products[index].category,
+                        style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black54),
+                      ),
+                      trailing: Text(
+                        '\$${products[index].price}',
+                        style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blueAccent),
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+              const SizedBox(
+                height: 20,
+              ),
+              Text(
+                'Total de productos: ${products.length}',
+                style: const TextStyle(fontSize: 18),
+              ),
+            ],
+          ),
         ),
       ),
     );

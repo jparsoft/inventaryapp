@@ -22,14 +22,9 @@ class _AddProductsPageState extends State<AddProductsPage> {
     generateLoader();
     await SheetsApi.insertRow(
       ProductModel(
-        id: '0',
         name: productNameController.text,
         price: productPriceController.text,
-        quantity: productQuantityController.text,
-        description: productDescriptionController.text,
-        image: 'none',
         category: productCategoryController.text,
-        createdAt: DateTime.now().toLocal().toIso8601String(),
       ),
     );
     Get.back();
@@ -44,16 +39,13 @@ class _AddProductsPageState extends State<AddProductsPage> {
 
   formClear() {
     productNameController.clear();
-    productPriceController.clear();
-    productQuantityController.clear();
-    productDescriptionController.clear();
     productCategoryController.clear();
+    productPriceController.clear();
   }
 
   final productNameController = TextEditingController();
   final productPriceController = TextEditingController();
-  final productQuantityController = TextEditingController();
-  final productDescriptionController = TextEditingController();
+
   final productCategoryController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
@@ -64,7 +56,6 @@ class _AddProductsPageState extends State<AddProductsPage> {
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-
           child: Column(mainAxisAlignment: MainAxisAlignment.start, children: <
               Widget>[
             //formulario
@@ -86,34 +77,6 @@ class _AddProductsPageState extends State<AddProductsPage> {
             ),
 
             TextFormField(
-              controller: productPriceController,
-              onChanged: (value) => setState(() {}),
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Precio',
-              ),
-              validator: (value) => value!.isEmpty ? 'Campo requerido' : null,
-            ),
-
-            const SizedBox(
-              height: 20,
-            ),
-
-            TextFormField(
-              controller: productQuantityController,
-              onChanged: (value) => setState(() {}),
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Cantidad',
-              ),
-              validator: (value) => value!.isEmpty ? 'Campo requerido' : null,
-            ),
-
-            const SizedBox(
-              height: 20,
-            ),
-
-            TextFormField(
               controller: productCategoryController,
               onChanged: (value) => setState(() {}),
               decoration: const InputDecoration(
@@ -126,15 +89,16 @@ class _AddProductsPageState extends State<AddProductsPage> {
             const SizedBox(
               height: 20,
             ),
-
             TextFormField(
-              controller: productDescriptionController,
+              controller: productPriceController,
               onChanged: (value) => setState(() {}),
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                labelText: 'Descripción',
+                labelText: 'Precio publico',
               ),
+              validator: (value) => value!.isEmpty ? 'Campo requerido' : null,
             ),
+
             const SizedBox(
               height: 20,
             ),

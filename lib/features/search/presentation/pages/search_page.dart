@@ -13,96 +13,83 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  ProductModel? product;
+  List<ProductModel> products = [];
   final searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          //formulario de consulta de productos
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            //formulario de consulta de productos
 
-          const SizedBox(
-            height: 20,
-          ),
-          TextFormField(
-            controller: searchController,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Nombre del producto',
-              suffixIcon: Icon(Icons.search),
+            const SizedBox(
+              height: 20,
             ),
-            validator: (value) => value!.isEmpty ? 'Campo requerido' : null,
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          SizedBox(
-              width: double.infinity,
-              height: 50,
-              child: ElevatedButton(
-                  onPressed: () async {
-                    product =
-                        await SheetsApi.getByName(name: searchController.text);
-                    setState(() {});
-                  },
-                  child: const Text('Buscar'))),
-          const SizedBox(
-            height: 20,
-          ),
-          product != null
-              ? SizedBox(
-                  height: 500,
-                  child: ExpansionTile(
-                    title: Text(product!.name),
-                    subtitle: Text('\$${product!.price}'),
-                    childrenPadding: const EdgeInsets.all(16),
-                    expandedAlignment: Alignment.centerLeft,
-                    expandedCrossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Divider(),
-                      const Text('Cantidad'),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      Text(product!.quantity),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      const Text('Categoría'),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      Text(product!.category),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      const Text('Fecha de creación'),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      Text(product!.createdAt),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      const Text('Descripción'),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      Text(product!.description),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                    ],
+            TextFormField(
+              controller: searchController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Nombre del producto',
+                suffixIcon: Icon(Icons.search),
+              ),
+              validator: (value) => value!.isEmpty ? 'Campo requerido' : null,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                    onPressed: () async {
+                      products.clear();
+                      products = await SheetsApi.getProductsFiltered(
+                          filter: searchController.text);
+                      setState(() {});
+                    },
+                    child: const Text('Buscar'))),
+            const SizedBox(
+              height: 20,
+            ),
+            products.isEmpty?const Text(
+              'Ingrese un producto para buscar',
+              style: TextStyle(fontSize: 14),
+            ):
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.5,
+              child: ListView.builder(
+                itemCount: products.length,
+                itemBuilder: (context, index) => ListTile(
+                  title: Text(
+                    products[index].name,
+                    style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black87),
                   ),
-                )
-              : const Center(
-                  child: Text('Use el buscador para encontrar un producto'),
+                  subtitle: Text(
+                    products[index].category,
+                    style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black54),
+                  ),
+                  trailing: Text(
+                    '\$${products[index].price}',
+                    style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blueAccent),
+                  ),
                 ),
-        ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
