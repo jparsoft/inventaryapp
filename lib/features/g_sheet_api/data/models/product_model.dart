@@ -22,12 +22,7 @@ class ProductModel {
   ProductModel copyWith({
     String? name,
     String? price,
-    String? quantity,
-    String? description,
-    String? image,
     String? category,
-    String? createdAt,
-    String? id,
   }) {
     return ProductModel(
       name: name ?? this.name,
@@ -44,5 +39,32 @@ class ProductModel {
       price: json['price'] as String,
       category: json['category'] as String,
     );
+  }
+}
+
+class ProductResponse extends ProductModel {
+  String id;
+  ProductResponse(
+      {required super.name,
+      required super.price,
+      required super.category,
+      required this.id});
+
+  factory ProductResponse.fromJson(Map<String, dynamic> json) {
+    return ProductResponse(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      price: json['price'] as String,
+      category: json['category'] as String,
+    );
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'price': price,
+      'category': category,
+    };
   }
 }

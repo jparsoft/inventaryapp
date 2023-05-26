@@ -54,46 +54,35 @@ class SheetsApi {
     }
   }
 
-  static Future<int> _getRowCount() async {
-    if (_productsSheet == null) {
-      return 0;
-    }
-    final lastRow = await _productsSheet!.values.lastRow();
-    return lastRow == null ? 0 : int.tryParse(lastRow.first) ?? 0;
-  }
-
   static Future insertRow(ProductModel row) async {
     try {
-      final int rowCount = await _getRowCount();
-      final newRow = row.copyWith(id: '${rowCount + 1}');
-
-      AppLogger.log(_TAG, 'Inserting row: ${newRow.toJson()}');
-
-      await _productsSheet!.values.map.appendRow(newRow.toJson());
+      await _productsSheet!.values.map.appendRow(row.toJson());
     } catch (e) {
       AppLogger.log(_TAG, e.toString());
     }
   }
 
-  static Future<List<ProductModel>> getProducts() async {
+  static Future<List<ProductResponse>> getProducts() async {
     try {
       final products = await _productsSheet!.values.map.allRows();
       AppLogger.log(_TAG, 'Products: $products');
-      return products!.map((e) => ProductModel.fromJson(e)).toList();
+      return products!.map((e) => ProductResponse.fromJson(e)).toList();
     } catch (e) {
       AppLogger.log(_TAG, e.toString());
       return [];
     }
   }
 
-  static Future<List<ProductModel>> getProductsFiltered(
+  static Future<List<ProductResponse>> getProductsFiltered(
       {required String filter}) async {
     try {
       final products = await _productsSheet!.values.map.allRows();
       AppLogger.log(_TAG, 'Products: $products');
       return products!
-          .map((e) => ProductModel.fromJson(e))
-          .where((element) => element.name.contains(filter)||element.category.contains(filter))
+          .map((e) => ProductResponse.fromJson(e))
+          .where((element) =>
+              element.name.contains(filter) ||
+              element.category.contains(filter))
           .toList();
     } catch (e) {
       AppLogger.log(_TAG, e.toString());
@@ -102,15 +91,38 @@ class SheetsApi {
   }
 
   // get by name
-  static Future<ProductModel?> getByName({required String name}) async {
+  static Future<ProductResponse?> getByName({required String name}) async {
     try {
       final product =
           await _productsSheet!.values.map.rowByKey(name, fromColumn: 1);
       AppLogger.log(_TAG, 'Products: $product');
-      return ProductModel.fromJson(product!);
+      return ProductResponse.fromJson(product!);
     } catch (e) {
       AppLogger.log(_TAG, 'Producto no encontrado');
       return null;
     }
+  }
+
+  // delete
+  static Future<bool> deleteProduct({required String id}) async {
+    try {
+      return await _productsSheet!
+          .deleteRow((int.tryParse(id.replaceAll('PROD', ''))!) + 1);
+    } catch (e) {
+      AppLogger.log(_TAG, 'Producto no encontrado');
+    }
+    return false;
+  }
+
+  // update
+  static Future<bool> updateProduct({required ProductResponse product}) async {
+    try {
+      await _productsSheet!.values.map
+          .insertRowByKey(product.name, product.toJson());
+      return true;
+    } catch (e) {
+      AppLogger.log(_TAG, 'Producto no encontrado');
+    }
+    return false;
   }
 }

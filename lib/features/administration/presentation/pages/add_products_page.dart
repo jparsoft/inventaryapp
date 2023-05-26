@@ -54,64 +54,70 @@ class _AddProductsPageState extends State<AddProductsPage> {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(mainAxisAlignment: MainAxisAlignment.start, children: <
-              Widget>[
-            //formulario
-            const SizedBox(
-              height: 50,
+        child: Card(
+          elevation: 5,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
+              key: _formKey,
+              child: Column(mainAxisAlignment: MainAxisAlignment.start, children: <
+                  Widget>[
+                //formulario
+                const SizedBox(
+                  height: 30,
+                ),
+                TextFormField(
+                  controller: productNameController,
+                  onChanged: (value) => setState(() {}),
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Nombre del producto',
+                  ),
+                  validator: (value) => value!.isEmpty ? 'Campo requerido' : null,
+                ),
+        
+                const SizedBox(
+                  height: 20,
+                ),
+        
+                TextFormField(
+                  controller: productCategoryController,
+                  onChanged: (value) => setState(() {}),
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Categoría',
+                  ),
+                  validator: (value) => value!.isEmpty ? 'Campo requerido' : null,
+                ),
+        
+                const SizedBox(
+                  height: 20,
+                ),
+                TextFormField(
+                  controller: productPriceController,
+                  onChanged: (value) => setState(() {}),
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Precio público',
+                  ),
+                  validator: (value) => value!.isEmpty ? 'Campo requerido' : null,
+                ),
+        
+                const SizedBox(
+                  height: 20,
+                ),
+        
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: _addProduct,
+                    child: const Text('Agregar producto'),
+                  ),
+                ),
+              ]),
             ),
-            TextFormField(
-              controller: productNameController,
-              onChanged: (value) => setState(() {}),
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Nombre del producto',
-              ),
-              validator: (value) => value!.isEmpty ? 'Campo requerido' : null,
-            ),
-
-            const SizedBox(
-              height: 20,
-            ),
-
-            TextFormField(
-              controller: productCategoryController,
-              onChanged: (value) => setState(() {}),
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Categoría',
-              ),
-              validator: (value) => value!.isEmpty ? 'Campo requerido' : null,
-            ),
-
-            const SizedBox(
-              height: 20,
-            ),
-            TextFormField(
-              controller: productPriceController,
-              onChanged: (value) => setState(() {}),
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Precio publico',
-              ),
-              validator: (value) => value!.isEmpty ? 'Campo requerido' : null,
-            ),
-
-            const SizedBox(
-              height: 20,
-            ),
-
-            SizedBox(
-              width: double.infinity,
-              height: 50,
-              child: ElevatedButton(
-                onPressed: _addProduct,
-                child: const Text('Agregar producto'),
-              ),
-            ),
-          ]),
+          ),
         ),
       ),
     );

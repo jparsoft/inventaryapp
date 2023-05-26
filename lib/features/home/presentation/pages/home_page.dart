@@ -11,7 +11,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<ProductModel> products = [];
+  List<ProductResponse> products = [];
 
   fetchProducts() async {
     products = await SheetsApi.getProducts();
@@ -45,31 +45,35 @@ class _HomePageState extends State<HomePage> {
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.7,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: products.length,
-                  itemBuilder: (context, index) => Card(
-                    child: ListTile(
-                      title: Text(
-                        products[index].name,
-                        style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black87),
-                      ),
-                      subtitle: Text(
-                        products[index].category,
-                        style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black54),
-                      ),
-                      trailing: Text(
-                        '\$${products[index].price}',
-                        style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blueAccent),
+                child: Scrollbar(
+                  trackVisibility: true,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: products.length,
+                    itemBuilder: (context, index) => Card(
+                      elevation: 5,
+                      child: ListTile(
+                        title: Text(
+                          products[index].name,
+                          style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black87),
+                        ),
+                        subtitle: Text(
+                          products[index].category,
+                          style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black54),
+                        ),
+                        trailing: Text(
+                          '\$${products[index].price}',
+                          style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blueAccent),
+                        ),
                       ),
                     ),
                   ),

@@ -1,10 +1,12 @@
+import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
+import 'package:curved_labeled_navigation_bar/curved_navigation_bar_item.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:inventary_app/features/administration/presentation/pages/add_products_page.dart';
 import 'package:inventary_app/features/home/presentation/pages/home_page.dart';
 
+import 'features/administration/presentation/pages/manager_page.dart';
 import 'features/g_sheet_api/data/datasources/g_sheet_api.dart';
-import 'features/g_sheet_api/data/models/product_model.dart';
 import 'features/search/presentation/pages/search_page.dart';
 
 Future<void> main() async {
@@ -57,58 +59,54 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
 
   final pages = [
-    const HomePage(),
     const SearchPage(),
     const AddProductsPage(),
-    const Text('Settings'),
+    const HomePage(),
+    const ManagerPage(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       body: Container(
         height: MediaQuery.of(context).size.height,
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/back_image.jpeg"),
-            fit: BoxFit.cover,
-            opacity: .2
-          ),
+              image: AssetImage("assets/back_image.jpeg"),
+              fit: BoxFit.cover,
+              opacity: .2),
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 20),
           child: pages[_selectedIndex],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _selectedIndex,
+      bottomNavigationBar: CurvedNavigationBar(
         onTap: (int index) {
           setState(() {
             _selectedIndex = index;
           });
         },
         items: const [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-              backgroundColor: Colors.blue),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              label: 'Buscar',
-              backgroundColor: Colors.blue),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.add),
-              label: 'Agregar',
-              backgroundColor: Colors.blue),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Configuración',
-              backgroundColor: Colors.blue),
+          CurvedNavigationBarItem(
+            child: Icon(Icons.search),
+            label: 'Buscar',
+          ),
+          CurvedNavigationBarItem(
+            child: Icon(Icons.add),
+            label: 'Agregar',
+          ),
+          CurvedNavigationBarItem(
+            child: Icon(Icons.paste_rounded),
+            label: 'Todos',
+          ),
+          CurvedNavigationBarItem(
+            child: Icon(Icons.app_settings_alt_rounded),
+            label: 'Administrar',
+          ),
         ],
       ),
     );
